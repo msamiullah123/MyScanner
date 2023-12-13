@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detect Camera Type</title>
+</head>
+<body>
+  <script>
+    navigator.mediaDevices.enumerateDevices()
+      .then(devices => {
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        if (videoDevices.length > 0) {
+          const labels = videoDevices.map(device => device.label.toLowerCase());
+
+          if (labels.some(label => label.includes('front'))) {
+            // Mobile camera detected (Page 2 code)
+            window.location.href = 'page3.html';
+          } else if (labels.some(label => label.includes('back'))) {
+            // Mobile back camera detected (Page 2 code)
+            window.location.href = 'page3.html';
+          } else {
+            // Laptop camera detected (Page 1 code)
+            window.location.href = 'page1.html';
+          }
+        } else {
+          // No camera detected (Page 3 code)
+          window.location.href = 'page2.html';
+        }
+      })
+      .catch(error => {
+        console.error('Error occurred while enumerating devices:', error);
+        // Handle the error case or redirect to a page (for instance, page3.html)
+        window.location.href = 'page2.html';
+      });
+  </script>
+</body>
+</html>
